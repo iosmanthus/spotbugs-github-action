@@ -16,5 +16,5 @@ test('parses file', async () => {
     'spotbugsXml.xml'
   )
   const annotations = annotationsForPath(spotBugsXml)
-  expect(annotations).toHaveLength(12)
+  expect(annotations).toHaveLength(3850)
 })
