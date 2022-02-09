@@ -29,7 +29,7 @@ async function run(): Promise<void> {
         annotationsForPath,
         searchResult.filesToUpload
       )
-      core.debug(
+      core.info(
         `Grouping ${annotations.length} annotations into chunks of ${MAX_ANNOTATIONS_PER_REQUEST}`
       )
 

@@ -189,7 +189,7 @@ function run() {
                 core.info(`With the provided path, there will be ${searchResult.filesToUpload.length} results uploaded`);
                 core.debug(`Root artifact directory is ${searchResult.rootDirectory}`);
                 const annotations = (0, ramda_1.chain)(annotations_1.annotationsForPath, searchResult.filesToUpload);
-                core.debug(`Grouping ${annotations.length} annotations into chunks of ${MAX_ANNOTATIONS_PER_REQUEST}`);
+                core.info(`Grouping ${annotations.length} annotations into chunks of ${MAX_ANNOTATIONS_PER_REQUEST}`);
                 const groupedAnnotations = annotations.length > MAX_ANNOTATIONS_PER_REQUEST
                     ? (0, ramda_1.splitEvery)(MAX_ANNOTATIONS_PER_REQUEST, annotations)
                     : [annotations];
