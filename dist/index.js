@@ -177,30 +177,25 @@ const github_1 = __nccwpck_require__(5438);
 const MAX_ANNOTATIONS_PER_REQUEST = 50;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const path = core.getInput(constants_1.Inputs.Path, { required: true });
-            const name = core.getInput(constants_1.Inputs.Name);
-            const title = core.getInput(constants_1.Inputs.Title);
-            const searchResult = yield (0, search_1.findResults)(path);
-            if (searchResult.filesToUpload.length === 0) {
-                core.warning(`No files were found for the provided path: ${path}. No results will be uploaded.`);
-            }
-            else {
-                core.info(`With the provided path, there will be ${searchResult.filesToUpload.length} results uploaded`);
-                core.debug(`Root artifact directory is ${searchResult.rootDirectory}`);
-                const annotations = (0, ramda_1.chain)(annotations_1.annotationsForPath, searchResult.filesToUpload);
-                core.info(`Grouping ${annotations.length} annotations into chunks of ${MAX_ANNOTATIONS_PER_REQUEST}`);
-                const groupedAnnotations = annotations.length > MAX_ANNOTATIONS_PER_REQUEST
-                    ? (0, ramda_1.splitEvery)(MAX_ANNOTATIONS_PER_REQUEST, annotations)
-                    : [annotations];
-                core.info(`Created ${groupedAnnotations.length} buckets`);
-                for (const annotationSet of groupedAnnotations) {
-                    yield createCheck(name, title, annotationSet, annotations.length);
-                }
-            }
+        const path = core.getInput(constants_1.Inputs.Path, { required: true });
+        const name = core.getInput(constants_1.Inputs.Name);
+        const title = core.getInput(constants_1.Inputs.Title);
+        const searchResult = yield (0, search_1.findResults)(path);
+        if (searchResult.filesToUpload.length === 0) {
+            core.warning(`No files were found for the provided path: ${path}. No results will be uploaded.`);
         }
-        catch (error) {
-            core.setFailed(error instanceof Error ? error : String(error));
+        else {
+            core.info(`With the provided path, there will be ${searchResult.filesToUpload.length} results uploaded`);
+            core.debug(`Root artifact directory is ${searchResult.rootDirectory}`);
+            const annotations = (0, ramda_1.chain)(annotations_1.annotationsForPath, searchResult.filesToUpload);
+            core.info(`Grouping ${annotations.length} annotations into chunks of ${MAX_ANNOTATIONS_PER_REQUEST}`);
+            const groupedAnnotations = annotations.length > MAX_ANNOTATIONS_PER_REQUEST
+                ? (0, ramda_1.splitEvery)(MAX_ANNOTATIONS_PER_REQUEST, annotations)
+                : [annotations];
+            core.info(`Created ${groupedAnnotations.length} buckets`);
+            for (const annotationSet of groupedAnnotations) {
+                yield createCheck(name, title, annotationSet, annotations.length);
+            }
         }
     });
 }

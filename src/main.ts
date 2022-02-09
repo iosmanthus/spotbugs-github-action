@@ -9,43 +9,39 @@ import { getOctokit, context } from '@actions/github'
 const MAX_ANNOTATIONS_PER_REQUEST = 50
 
 async function run(): Promise<void> {
-  try {
-    const path = core.getInput(Inputs.Path, { required: true })
-    const name = core.getInput(Inputs.Name)
-    const title = core.getInput(Inputs.Title)
+  const path = core.getInput(Inputs.Path, { required: true })
+  const name = core.getInput(Inputs.Name)
+  const title = core.getInput(Inputs.Title)
 
-    const searchResult = await findResults(path)
-    if (searchResult.filesToUpload.length === 0) {
-      core.warning(
-        `No files were found for the provided path: ${path}. No results will be uploaded.`
-      )
-    } else {
-      core.info(
-        `With the provided path, there will be ${searchResult.filesToUpload.length} results uploaded`
-      )
-      core.debug(`Root artifact directory is ${searchResult.rootDirectory}`)
+  const searchResult = await findResults(path)
+  if (searchResult.filesToUpload.length === 0) {
+    core.warning(
+      `No files were found for the provided path: ${path}. No results will be uploaded.`
+    )
+  } else {
+    core.info(
+      `With the provided path, there will be ${searchResult.filesToUpload.length} results uploaded`
+    )
+    core.debug(`Root artifact directory is ${searchResult.rootDirectory}`)
 
-      const annotations: Annotation[] = chain(
-        annotationsForPath,
-        searchResult.filesToUpload
-      )
-      core.info(
-        `Grouping ${annotations.length} annotations into chunks of ${MAX_ANNOTATIONS_PER_REQUEST}`
-      )
+    const annotations: Annotation[] = chain(
+      annotationsForPath,
+      searchResult.filesToUpload
+    )
+    core.info(
+      `Grouping ${annotations.length} annotations into chunks of ${MAX_ANNOTATIONS_PER_REQUEST}`
+    )
 
-      const groupedAnnotations: Annotation[][] =
-        annotations.length > MAX_ANNOTATIONS_PER_REQUEST
-          ? splitEvery(MAX_ANNOTATIONS_PER_REQUEST, annotations)
-          : [annotations]
+    const groupedAnnotations: Annotation[][] =
+      annotations.length > MAX_ANNOTATIONS_PER_REQUEST
+        ? splitEvery(MAX_ANNOTATIONS_PER_REQUEST, annotations)
+        : [annotations]
 
-      core.info(`Created ${groupedAnnotations.length} buckets`)
+    core.info(`Created ${groupedAnnotations.length} buckets`)
 
-      for (const annotationSet of groupedAnnotations) {
-        await createCheck(name, title, annotationSet, annotations.length)
-      }
+    for (const annotationSet of groupedAnnotations) {
+      await createCheck(name, title, annotationSet, annotations.length)
     }
-  } catch (error) {
-    core.setFailed(error instanceof Error ? error : String(error))
   }
 }
 
