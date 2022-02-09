@@ -193,7 +193,7 @@ function run() {
                 const groupedAnnotations = annotations.length > MAX_ANNOTATIONS_PER_REQUEST
                     ? (0, ramda_1.splitEvery)(MAX_ANNOTATIONS_PER_REQUEST, annotations)
                     : [annotations];
-                core.debug(`Created ${groupedAnnotations.length} buckets`);
+                core.info(`Created ${groupedAnnotations.length} buckets`);
                 for (const annotationSet of groupedAnnotations) {
                     yield createCheck(name, title, annotationSet, annotations.length);
                 }
