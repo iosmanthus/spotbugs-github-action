@@ -174,7 +174,7 @@ const constants_1 = __nccwpck_require__(5105);
 const annotations_1 = __nccwpck_require__(5598);
 const ramda_1 = __nccwpck_require__(4119);
 const github_1 = __nccwpck_require__(5438);
-const MAX_ANNOTATIONS_PER_REQUEST = 50;
+const MAX_ANNOTATIONS_PER_REQUEST = 100;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         const path = core.getInput(constants_1.Inputs.Path, { required: true });

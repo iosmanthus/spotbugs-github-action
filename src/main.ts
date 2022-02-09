@@ -6,7 +6,7 @@ import { chain, splitEvery } from 'ramda'
 import { Annotation } from './github'
 import { getOctokit, context } from '@actions/github'
 
-const MAX_ANNOTATIONS_PER_REQUEST = 50
+const MAX_ANNOTATIONS_PER_REQUEST = 100
 
 async function run(): Promise<void> {
   const path = core.getInput(Inputs.Path, { required: true })
