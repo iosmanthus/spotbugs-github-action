@@ -1,16 +1,16 @@
 import * as core from '@actions/core'
-import {findResults} from './search'
-import {Inputs} from './constants'
-import {annotationsForPath} from './annotations'
-import {chain, splitEvery} from 'ramda'
-import {Annotation} from './github'
-import {getOctokit, context} from '@actions/github'
+import { findResults } from './search'
+import { Inputs } from './constants'
+import { annotationsForPath } from './annotations'
+import { chain, splitEvery } from 'ramda'
+import { Annotation } from './github'
+import { getOctokit, context } from '@actions/github'
 
 const MAX_ANNOTATIONS_PER_REQUEST = 50
 
 async function run(): Promise<void> {
   try {
-    const path = core.getInput(Inputs.Path, {required: true})
+    const path = core.getInput(Inputs.Path, { required: true })
     const name = core.getInput(Inputs.Name)
     const title = core.getInput(Inputs.Title)
 
@@ -85,7 +85,7 @@ async function createCheck(
         annotations
       }
     }
-    core.info(JSON.stringify(createRequest))
+    core.info('create ' + JSON.stringify(createRequest))
 
     await octokit.checks.create(createRequest)
   } else {
@@ -102,7 +102,7 @@ async function createCheck(
         annotations
       }
     }
-    core.info(JSON.stringify(update_req))
+    core.info('update ' + JSON.stringify(update_req))
 
 
     await octokit.checks.update(update_req)
