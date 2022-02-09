@@ -220,7 +220,7 @@ function createCheck(name, title, annotations, numErrors) {
                     summary: `${numErrors} violation(s) found`,
                     annotations
                 } });
-            console.log(createRequest);
+            core.info(JSON.stringify(createRequest));
             yield octokit.checks.create(createRequest);
         }
         else {
@@ -230,7 +230,7 @@ function createCheck(name, title, annotations, numErrors) {
                     summary: `${numErrors} violation(s) found`,
                     annotations
                 } });
-            console.log(update_req);
+            core.info(JSON.stringify(update_req));
             yield octokit.checks.update(update_req);
         }
     });

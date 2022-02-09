@@ -85,7 +85,7 @@ async function createCheck(
         annotations
       }
     }
-    console.log(createRequest)
+    core.info(JSON.stringify(createRequest))
 
     await octokit.checks.create(createRequest)
   } else {
@@ -102,7 +102,8 @@ async function createCheck(
         annotations
       }
     }
-    console.log(update_req)
+    core.info(JSON.stringify(update_req))
+
 
     await octokit.checks.update(update_req)
   }
